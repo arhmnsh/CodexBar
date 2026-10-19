@@ -38,11 +38,11 @@ extension AntigravityLocalReader {
         var rows = 100000
         var blobBytes = 16 * 1024 * 1024
         var databaseBytes = 64 * 1024 * 1024
-        var bytes = 512 * 1024 * 1024
+        var bytes = 1024 * 1024 * 1024
         var schemaEntries = 128
         var schemaColumns = 64
         var schemaBytes = 64 * 1024
-        var duration: TimeInterval = 20
+        var duration: TimeInterval = 60
     }
 
     struct Statistics: Sendable {
