@@ -2,6 +2,10 @@
 
 ## 0.78.1 — Unreleased
 
+### Fixed
+
+- Antigravity: scan larger local histories without dropping complete cost reports while retaining bounded work and cancellation (#4639). Thanks @arhmnsh!
+
 ## 0.78.0 — 2026-10-19
 
 ### Highlights
