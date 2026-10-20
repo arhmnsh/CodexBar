@@ -50,6 +50,29 @@ struct AntigravityLocalScanTests {
     }
 
     @Test
+    func `history beyond the former row cap produces a complete report`() throws {
+        let fixture = try Fixture()
+        let blob = Fixture.blob().map { String(format: "%02x", $0) }.joined()
+        for file in 0..<6 {
+            let database = try Fixture.open(fixture.database("session-\(file)"))
+            defer { sqlite3_close(database) }
+            try Fixture.execute(database, """
+            WITH RECURSIVE rows(idx) AS (
+                SELECT 1
+                UNION ALL SELECT idx + 1 FROM rows WHERE idx < 10000
+            )
+            INSERT INTO gen_metadata (idx, data)
+            SELECT idx, X'\(blob)' FROM rows
+            """)
+        }
+
+        let report = try fixture.report()
+        #expect(report.coverage == .complete)
+        #expect(report.statistics.rows == 60000)
+        #expect(report.report.summary != nil)
+    }
+
+    @Test
     func `the schema byte allowance applies to each database rather than the whole history`() throws {
         let fixture = try Fixture()
         try fixture.database("session-1", blobs: [Fixture.blob()])
